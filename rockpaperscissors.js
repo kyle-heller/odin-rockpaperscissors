@@ -17,9 +17,11 @@ results: */}
 Write a NEW function called game(). Call the playRound function inside of this one to play a 5 round game 
 that keeps score and reports a winner or loser at the end. */}
 
-computerChoice = ""
-playerChoice = ""
-roundWinner = ""
+let computerChoice = ""
+let playerChoice = ""
+let roundWinner = ""
+let playerScore = 0
+let computerScore = 0
 
 //Get computer choice
 function getComputerChoice(){
@@ -38,6 +40,7 @@ playerChoice = result
 getPlayerChoice()
 getComputerChoice()
 singleRound()
+playGame()
 
 
 //Single round compare
@@ -46,46 +49,77 @@ function singleRound(){
     switch (computerChoice) {
         case 'Rock':
         if (playerChoice === "Rock") {
-          console.log("Go again!")
+          result = "Tie"
         }
         else if (playerChoice === "Paper") {
-          console.log("You win!")
+          result = "Win"
         }
-        else if (playerChoice === "Scissors") {
-          console.log("You lose!")
+        else if (playerChoice === "Scissors") {``
+          result = "Lose"
+        }
+        else {
+          console.log("Bad input")
         }
           break;
         case 'Paper':
           if (playerChoice === "Rock") {
-            console.log("You lose!")
+            result = "Lose"
           }
           else if (playerChoice === "Paper") {
-            console.log("Go again!!")
+            result = "Tie"
           }
           else if (playerChoice === "Scissors"){
-            console.log("You win!")
+            result = "Win"
+          }
+          else {
+            console.log("Bad input")
           }
           break;
         case 'Scissors':
           if (playerChoice === "Rock") {
-            console.log("You Win!")
+            result = "Win"
           }
           else if (playerChoice === "Paper") {
-            console.log("You lose!!")
+            result = "Lose"
           }
           else if (playerChoice === "Scissors") {
-            console.log("Go again!")
+            result = "Tie"
+          }
+          else {
+            console.log("Bad input")
           }
           break;
-        default: 
-        roundWinner = "Wrong input";
       }
+      return result
 }
 
-console.log(playerChoice)
-console.log(computerChoice)
-console.log(roundWinner)
+//Play a group of 5 rounds with score
 
+function playGame() {
+  for (let i = 0; i < 5; i++) {
+if (singleRound() === "Win") {
+console.log("You win!")
+playerScore++
+getComputerChoice()
+getPlayerChoice()
+}
+else if (singleRound() === "Lose") {
+console.log("You lose!")
+computerScore++
+getComputerChoice()
+getPlayerChoice()
+}
+else if (singleRound() === "Tie") {
+console.log("You tied!")
+getComputerChoice()
+getPlayerChoice()
+}
+}
+
+
+console.log(roundWinner)
+console.log("Player:" + playerScore + " Computer:" + computerScore)
+}
 
 //Standardize capitalization of user input
 function capitalize(input) {
