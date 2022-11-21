@@ -30,16 +30,16 @@ playGame()
 
 //Get computer choice
 function getComputerChoice(){
-let options = ['Rock', 'Paper', 'Scissors']
-result = options[Math.floor(Math.random()*3)]
-computerChoice = result
+  let options = ['Rock', 'Paper', 'Scissors']
+  result = options[Math.floor(Math.random()*3)]
+  computerChoice = result
 }
 
 //Get player choice
 function getPlayerChoice(){
-result = prompt("Rock, Paper, or Scissors?")
-result = capitalize(result)
-playerChoice = result
+  result = prompt("Rock, Paper, or Scissors?")
+  result = capitalize(result)
+  playerChoice = result
 }
 
 //Single round compare
