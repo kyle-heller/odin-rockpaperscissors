@@ -23,6 +23,11 @@ let roundWinner = ""
 let playerScore = 0
 let computerScore = 0
 
+getPlayerChoice() 
+getComputerChoice()
+singleRound()
+playGame()
+
 //Get computer choice
 function getComputerChoice(){
 let options = ['Rock', 'Paper', 'Scissors']
@@ -36,12 +41,6 @@ result = prompt("Rock, Paper, or Scissors?")
 result = capitalize(result)
 playerChoice = result
 }
-
-getPlayerChoice()
-getComputerChoice()
-singleRound()
-playGame()
-
 
 //Single round compare
 function singleRound(){
@@ -93,32 +92,29 @@ function singleRound(){
       return result
 }
 
-//Play a group of 5 rounds with score
-
+//Play a group of 5 rounds and keep score
 function playGame() {
   for (let i = 0; i < 5; i++) {
-if (singleRound() === "Win") {
-console.log("You win!")
-playerScore++
-getComputerChoice()
-getPlayerChoice()
-}
-else if (singleRound() === "Lose") {
-console.log("You lose!")
-computerScore++
-getComputerChoice()
-getPlayerChoice()
-}
-else if (singleRound() === "Tie") {
-console.log("You tied!")
-getComputerChoice()
-getPlayerChoice()
-}
-}
-
-
-console.log(roundWinner)
-console.log("Player:" + playerScore + " Computer:" + computerScore)
+    if (singleRound() === "Win") {
+      console.log("You win!")
+      playerScore++
+      getComputerChoice()
+      getPlayerChoice()
+    }
+    else if (singleRound() === "Lose") {
+      console.log("You lose!")
+      computerScore++
+      getComputerChoice()
+      getPlayerChoice()
+    }
+    else if (singleRound() === "Tie") {
+      console.log("You tied!")
+      getComputerChoice()
+      getPlayerChoice()
+    }
+  }
+  console.log(roundWinner)
+  console.log("Player:" + playerScore + " Computer:" + computerScore)
 }
 
 //Standardize capitalization of user input
