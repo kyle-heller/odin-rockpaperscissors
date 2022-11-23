@@ -17,15 +17,72 @@ results: */}
 Write a NEW function called game(). Call the playRound function inside of this one to play a 5 round game 
 that keeps score and reports a winner or loser at the end. */}
 
+// In our UI, the player should be able to play the game by clicking on buttons rather than typing their 
+// answer in a prompt.
+// For now, remove the logic that plays exactly five rounds.
+// Create three buttons, one for each selection. Add an event listener to the buttons that call your 
+// playRound function with the correct playerSelection every time a button is clicked. (you can keep 
+//   the console.logs for this step)
+// Add a div for displaying results and change all of your console.logs into DOM methods.
+// Display the running score, and announce a winner of the game once one player reaches 5 points.
+// You will likely have to refactor (rework/rewrite) your original code to make it work for this. That’s 
+// OK! Reworking old code is an important part of a programmer’s life.
+
+
+ /////////////////////////////////////////
+
+
+ const rockbutton = document.getElementById('rock')
+ const paperbutton = document.getElementById('paper')
+ const scissorsbutton = document.getElementById('scissors')
+ 
+ window.addEventListener('click', function (e) {
+
+ if (e.target === rockbutton) {
+ e.target.classList.add('pressed');
+ playerChoice = "Rock";
+ singleRound()
+ playGame()
+ }
+
+ else if (e.target === paperbutton) {
+ e.target.classList.add('pressed');
+ playerChoice = "Paper";
+ singleRound()
+ playGame()
+ }
+
+ else if (e.target === scissorsbutton) {
+ e.target.classList.add('pressed');
+ playerChoice = "Scissors";
+ singleRound()
+ playGame()
+ }});
+ 
+
+ function removeTransition(e) {
+ if (e.propertyName !== 'transform') return // skip it if it's not a transform
+ this.classList.remove('pressed')
+}
+
+const buttons = document.querySelectorAll('.button');
+buttons.forEach(button => button.addEventListener('transitionend', removeTransition));
+
+
+ /////////////////////////////////////////
+
+
+
 let computerChoice = ""
 let playerChoice = ""
 let roundWinner = ""
 let playerScore = 0
 let computerScore = 0
+let round = 0
 
-getPlayerChoice() 
+// getPlayerChoice() 
 getComputerChoice()
-singleRound()
+// singleRound()
 playGame()
 
 //Get computer choice
@@ -33,13 +90,6 @@ function getComputerChoice(){
   let options = ['Rock', 'Paper', 'Scissors']
   result = options[Math.floor(Math.random()*3)]
   computerChoice = result
-}
-
-//Get player choice
-function getPlayerChoice(){
-  result = prompt("Rock, Paper, or Scissors?")
-  result = capitalize(result)
-  playerChoice = result
 }
 
 //Single round compare
@@ -94,29 +144,48 @@ function singleRound(){
 
 //Play a group of 5 rounds and keep score
 function playGame() {
-  for (let i = 0; i < 5; i++) {
     if (singleRound() === "Win") {
       console.log("You win!")
       playerScore++
+      round++
       getComputerChoice()
-      getPlayerChoice()
+      checkScore()
+
     }
     else if (singleRound() === "Lose") {
       console.log("You lose!")
       computerScore++
+      round++
       getComputerChoice()
-      getPlayerChoice()
+      checkScore()
+    
     }
     else if (singleRound() === "Tie") {
       console.log("You tied!")
+      round++
       getComputerChoice()
-      getPlayerChoice()
+      checkScore()
+    }}
+   
+
+function checkScore() {
+
+    if (round === 5) {
+      if (playerScore > computerScore) {
+        console.log("You win the game!")
+        playerScore = 0
+        computerScore = 0
+        round = 0
+      }
+      else if (playerScore < computerScore) {
+        console.log("You lose the game!")
+        playerScore = 0
+        computerScore = 0
+        round = 0
+      }
     }
   }
-  console.log(roundWinner)
-  console.log("Player:" + playerScore + " Computer:" + computerScore)
-}
-
+  
 //Standardize capitalization of user input
 function capitalize(input) {
     lowercase = input.toLowerCase()
