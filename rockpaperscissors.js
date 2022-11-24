@@ -35,38 +35,71 @@ that keeps score and reports a winner or loser at the end. */}
  const rockbutton = document.getElementById('rock')
  const paperbutton = document.getElementById('paper')
  const scissorsbutton = document.getElementById('scissors')
+ const resultstext = document.getElementById('resultstext')
+
+ const crock = document.getElementById('crock')
+ const cpaper= document.getElementById('cpaper')
+ const cscissors = document.getElementById('cscissors')
+
+
+
+ var last_clicked = 0;
  
- window.addEventListener('click', function (e) {
+
+ window.addEventListener('mousedown', function (e) {
+  if (Date.now() - last_clicked < 200) return; //this prevents spam clicking breaking counters
+  last_clicked = Date.now();
 
  if (e.target === rockbutton) {
  e.target.classList.add('pressed');
  playerChoice = "Rock";
+ getComputerChoice()
  singleRound()
  playGame()
+crock.style.opacity = '0'
+cpaper.style.opacity = '0'
+cscissors.style.opacity = '0'
+showComputerChoice()
  }
 
  else if (e.target === paperbutton) {
  e.target.classList.add('pressed');
  playerChoice = "Paper";
+ getComputerChoice()
  singleRound()
  playGame()
+ crock.style.opacity = '0'
+ cpaper.style.opacity = '0'
+ cscissors.style.opacity = '0'
+ showComputerChoice()
  }
 
  else if (e.target === scissorsbutton) {
  e.target.classList.add('pressed');
  playerChoice = "Scissors";
+ getComputerChoice()
  singleRound()
  playGame()
+ crock.style.opacity = '0'
+ cpaper.style.opacity = '0'
+ cscissors.style.opacity = '0'
+ showComputerChoice()
  }});
  
 
  function removeTransition(e) {
  if (e.propertyName !== 'transform') return // skip it if it's not a transform
  this.classList.remove('pressed')
+ resultstext.style.opacity = '1'
 }
 
 const buttons = document.querySelectorAll('.button');
 buttons.forEach(button => button.addEventListener('transitionend', removeTransition));
+
+
+
+// resultstext.addEventListener('click', () => resultstext.style.opacity = '0');
+// // If you want to remove it from the page after the fadeout
 
 
  /////////////////////////////////////////
@@ -80,9 +113,12 @@ let playerScore = 0
 let computerScore = 0
 let round = 0
 
+const updateplayerscore = document.getElementById(playerscore)
+const updatecomputerscore = document.getElementById(computerscore)
+
 // getPlayerChoice() 
-getComputerChoice()
-// singleRound()
+// getComputerChoice()
+singleRound()
 playGame()
 
 //Get computer choice
@@ -139,7 +175,22 @@ function singleRound(){
           }
           break;
       }
-      return result
+      return result;
+}
+
+function showComputerChoice () { //show computer choice
+  if ((computerChoice === "Rock") && round !== 5 && round !== 0 ) {
+  setTimeout(function(){document.getElementById("crock").style.opacity = '1'}, 500);
+
+  }
+  else if (computerChoice === "Paper" && round !== 5 && round !== 0) {
+  setTimeout(function(){document.getElementById("cpaper").style.opacity = '1'}, 500);
+
+  }
+  else if (computerChoice === "Scissors" && round !== 5 && round !== 0){
+  setTimeout(function(){document.getElementById("cscissors").style.opacity = '1'}, 500);
+
+  }
 }
 
 //Play a group of 5 rounds and keep score
@@ -148,22 +199,26 @@ function playGame() {
       console.log("You win!")
       playerScore++
       round++
-      getComputerChoice()
+      document.getElementById('playerscore').textContent = `Player Score: ${playerScore}`
+      document.getElementById('computerscore').textContent = `Computer Score: ${computerScore}`
+      document.getElementById('round').textContent = `Round: ${round}`
       checkScore()
-
     }
     else if (singleRound() === "Lose") {
       console.log("You lose!")
       computerScore++
       round++
-      getComputerChoice()
+      document.getElementById('playerscore').textContent = `Player Score: ${playerScore}`
+      document.getElementById('computerscore').textContent = `Computer Score: ${computerScore}`
+      document.getElementById('round').textContent = `Round: ${round}`
       checkScore()
-    
     }
     else if (singleRound() === "Tie") {
       console.log("You tied!")
       round++
-      getComputerChoice()
+      document.getElementById('playerscore').textContent = `Player Score: ${playerScore}`
+      document.getElementById('computerscore').textContent = `Computer Score: ${computerScore}`
+      document.getElementById('round').textContent = `Round: ${round}`
       checkScore()
     }}
    
@@ -171,29 +226,35 @@ function playGame() {
 function checkScore() {
 
     if (round === 5) {
+    // debugger;
       if (playerScore > computerScore) {
+        resultstext.addEventListener('transitionend', () => resultstext.textContent = '');
         console.log("You win the game!")
+        document.getElementById('resultstext').textContent = `You win! 😎`
+        setTimeout(function(){document.getElementById("resultstext").style.opacity = '0'}, 500);
+        round = 0
         playerScore = 0
         computerScore = 0
-        round = 0
       }
       else if (playerScore < computerScore) {
+        resultstext.addEventListener('transitionend', () => resultstext.textContent = '');
         console.log("You lose the game!")
+        document.getElementById('resultstext').textContent = `You lose! 😥`
+        setTimeout(function(){document.getElementById("resultstext").style.opacity = '0'}, 500);
+        round = 0
         playerScore = 0
         computerScore = 0
-        round = 0
       }
-    }
+      else if (playerScore === computerScore) {
+        resultstext.addEventListener('transitionend', () => resultstext.textContent = '');
+        console.log("You lose the game!")
+        document.getElementById('resultstext').textContent = `You tied! 👻`
+        setTimeout(function(){document.getElementById("resultstext").style.opacity = '0'}, 500);
+        round = 0
+        playerScore = 0
+        computerScore = 0
+      }
   }
+}
   
-//Standardize capitalization of user input
-function capitalize(input) {
-    lowercase = input.toLowerCase()
-    split = lowercase.split("")
-    firstletter = split[0]
-    split[0] = firstletter.toUpperCase()
-    parsed = split.join("")
-    return parsed
- }
-
 
